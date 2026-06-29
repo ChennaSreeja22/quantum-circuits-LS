@@ -105,66 +105,26 @@ def n1n2n1_angles(b: Bloch) -> tuple[float, float, float, float]:
     # TODO(student): implement using the steps above.
     raise NotImplementedError("n1n2n1_angles is not implemented yet")
 
-
 def approx_angle_with_tolerance(angle: float, tolerance: float) -> int:
     """Find an integer multiple k such that
-        (k * LAMBDA_PI) mod 2*pi  ~=  angle   (within `tolerance`)
-    Since LAMBDA_PI / (2 pi) is irrational, such a k always exists; search
-    k = 1, 2, 3, ... and return the first one whose wrapped multiple lands within
-    `tolerance` of `angle` (compare both as angles in [0, 2 pi)).
-
-    Hint:
-      * wrap an angle into [0, 2 pi)
-      * the angular distance between two wrapped angles a, b is
-        min(|a - b|, TWO_PI - |a - b|) (so 0.01 and 2*pi - 0.01 count as close).
+    (k * LAMBDA_PI) mod 2*pi ~= angle.
     """
-    # TODO(student): implement using the hint above.
-    raise NotImplementedError("approx_angle_with_tolerance is not implemented yet")
+
+    angle = angle % TWO_PI
+    k = 1
+
+    while True:
+        candidate = (k * LAMBDA_PI) % TWO_PI
+
+        diff = abs(candidate - angle)
+        diff = min(diff, TWO_PI - diff)
+
+        if diff <= tolerance:
+            return k
+
+        k += 1
 
 
 def decompose_2x2(u: np.ndarray, tolerance: float) -> tuple[int, int, int]:
-    """Approximate a 2x2 unitary `u` as a product of powers of M1 and M2:
-
-        u  ~=  M1^k * M2^l * M1^m     (up to a global phase)
-
-    where M1 is a rotation about axis a1 and M2 a rotation about axis a2, each by
-    the base angle realized by the H/T building blocks. Returns the powers
-    (k, l, m).
-
-    Steps (combine the two functions above):
-
-      1. Get the Bloch form of u (to_bloch), then factor its rotation into the
-         three frame angles with n1n2n1_angles:
-             alpha, beta, gamma, _global_phase = n1n2n1_angles(to_bloch(u))
-         alpha and gamma are rotations about a1 (realized by powers of M1);
-         beta is a rotation about a2 (realized by powers of M2).
-
-      2. Convert each angle to an integer power with approx_angle_with_tolerance:
-             k = approx_angle_with_tolerance(alpha, tolerance)   # power of M1
-             l = approx_angle_with_tolerance(beta,  tolerance)   # power of M2
-             m = approx_angle_with_tolerance(gamma, tolerance)   # power of M1
-         (Mind the relationship between a target rotation angle and the base
-         angle each application of M1/M2 adds.)
-
-      3. Return (k, l, m).
-    """
-    # TODO(student): implement using the steps above.
-    def approx_angle_with_tolerance(angle: float, tolerance: float) -> int:
-        """Find the first integer k such that
-       (k * LAMBDA_PI) mod 2π is within tolerance of angle.
-       """
-
-        angle = angle % TWO_PI
-
-        k = 1
-
-        while True:
-            candidate = (k * LAMBDA_PI) % TWO_PI
-
-            diff = abs(candidate - angle)
-            diff = min(diff, TWO_PI - diff)
-
-            if diff <= tolerance:
-                return k
-
-            k += 1
+    """Approximate a 2x2 unitary `u` as a product of powers of M1 and M2."""
+    raise NotImplementedError("decompose_2x2 is not implemented yet")
